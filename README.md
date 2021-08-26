@@ -14,6 +14,7 @@ download [here](https://nodejs.org/dist/v14.17.5/node-v14.17.5.pkg)
 
 In the project directory, you can run:
 
+### `npm install`
 ### `npm start`
 
 Runs the app in the development mode.<br>
