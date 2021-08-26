@@ -67,6 +67,6 @@ purpose to get the last node attitude and predict all node model
   > `@bestSill` is the `bestSill`  for for each model and deep each node
  > `@bestRange`  is the `bestRange`  for for each model and deep each node 
 
-# Example of 10 nodes
-![Demo](screencapture-167-71-209-149-2021-08-26-20_32_54.png)
+# Example of 31 points
+![Demo](IMG_5873.JPG)
 
