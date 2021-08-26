@@ -1,4 +1,14 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Improved Kriging Algorithms\
+
+Prediction on Spatial Elevation Using Improved Kriging Algorithms: An Application in Environmental Management
+
+# Guide
+this project create by [ReactJS](https://reactjs.org/)
+
+so first you should install [NodeJS](https://nodejs.org/en/) on your computer or maching
+download [here](https://nodejs.org/dist/v14.17.5/node-v14.17.5.pkg) 
+
+# Start Project
 
 ## Available Scripts
 
@@ -12,57 +22,49 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Core and function
 
-### `npm run build`
+```
+Utils/calBestAttitude.js
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+function calCulateAttitude(node:Array, variable:Object): result: Array
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+```
+purpose to get the last node attitude and predict all node model
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> `@param` nodes is array contain like ``[{latitude, longtitude, attitude}]``
 
-### `npm run eject`
+>`@params` variable is object contain `{nugget:number, sill:number, range: number}`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+ @result array of object like 
+ ```
+   {
+     bestSumList: [number] 
+     bestSum: number,
+     allRangOfNodes: [ rage:number ],  
+     semiVarioGram: {
+       exponential: Array,
+       spherical: Array,
+       pentaspherical: Array.
+       gaussian: Array,
+       exponentialPolynomialTrendlines: Array,
+       trendline: Array
+     },
+     error,
+     bestNugget,
+     bestSill,
+     bestRange
+   }
+ ```
+ > `@bestSumList` nunber is the number of best of prediction Attitude all node  
+ > `@bestSum`  is the result attitude of latest node  
+ > `@allRangOfNodes`  all nodejs range  
+ > `@semiVarioGram` is the `semivariance` for each model and deep each node eg.  
+ 
+ > `@error` is the `error` for for each model and deep each node.  
+ > `@bestNugget` is the `bestNugget`  for for each model and deep each node
+  > `@bestSill` is the `bestSill`  for for each model and deep each node
+ > `@bestRange`  is the `bestRange`  for for each model and deep each node 
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
