@@ -61,10 +61,12 @@ purpose to get the last node attitude and predict all node model
  > `@bestSum`  is the result attitude of latest node  
  > `@allRangOfNodes`  all nodejs range  
  > `@semiVarioGram` is the `semivariance` for each model and deep each node eg.  
- 
+
  > `@error` is the `error` for for each model and deep each node.  
  > `@bestNugget` is the `bestNugget`  for for each model and deep each node
   > `@bestSill` is the `bestSill`  for for each model and deep each node
  > `@bestRange`  is the `bestRange`  for for each model and deep each node 
 
+# Example of 10 nodes
+![Demo](screencapture-167-71-209-149-2021-08-26-20_32_54.png)
 
