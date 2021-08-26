@@ -1,0 +1,81 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #e0e0e0;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+
+.container-graph{
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.modal {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.id-node{
+  margin-right:20px;
+  text-align: left;
+  width:15px;
+}
+
+.graph {
+  display:flex;
+  flex-direction: column;
+}
+
+.node-p-id{
+  width:0;
+}
+.node-unit{
+  width:100%;
+  padding-left: 15px;
+}
+input {
+  width: auto;
+  height: 20px;
+  font-size: 16px;
+  margin-right: 15px;
+}
+.input-node{
+  display: flex;
+  align-items: center;
+}
+.input-node-title{
+  display : flex;
+}
+.input-node-title  p  {
+    margin-right:15px;
+}
+.td {
+  font-size: 12px;
+}
+.wrapper-export-excel {
+  margin: 0 -16px;
+}
+.download-table-xls-button {
+  margin: 8px 16px;
+}
