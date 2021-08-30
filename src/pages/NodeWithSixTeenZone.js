@@ -20,6 +20,8 @@ import NodeResultTable from "../components/NodeResultTable";
 import { Link } from "react-router-dom";
 import { findCenter, separateZone } from "../Utils/separateNode";
 import { separateSixTeenZone } from "../Utils/separateSixTeenZone";
+import ZoneTable from "../components/ZoneTable";
+import ButtonExportExel from "./ButtonGroupExportExcel";
 
 const memoizeCalCulateAttitude = memoize(calCulateAttitude);
 class NodeSixTeenZone extends Component {
@@ -34,6 +36,7 @@ class NodeSixTeenZone extends Component {
       sill: "",
       range: "",
     },
+    zones: []
   };
 
   addNode = () => {
@@ -111,7 +114,9 @@ class NodeSixTeenZone extends Component {
 
     const zoneFours = separateZone(nodes, center);
     const zone = separateSixTeenZone(zoneFours)
-
+    this.setState({
+      zones: zone
+    })
     const key = Object.keys(zone);
     const newNode = [];
     const allRangeOfNodesTemp = [];
@@ -183,6 +188,7 @@ class NodeSixTeenZone extends Component {
       semiVarioGram,
       model = "exponential",
       variable,
+      zones
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -347,24 +353,7 @@ class NodeSixTeenZone extends Component {
           <button onClick={this.addNode}>ADD NODE</button>
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
-            <div className="wrapper-export-excel">
-              <ReactHTMLTableToExcel
-                id="table-calculate-node-result-button"
-                className="download-table-xls-button"
-                table="table-calculate-node-result"
-                filename="prediction_calculate_result"
-                sheet="prediction_calculate_result"
-                buttonText="Download as prediction"
-              />
-              <ReactHTMLTableToExcel
-                id="test-table-xls-button"
-                className="download-table-xls-button"
-                table="error-table"
-                filename="errorSheet"
-                sheet="ErrorSheetxls"
-                buttonText="Download as errors report"
-              />
-            </div>
+            <ButtonExportExel />
           )}
         </div>
 
@@ -532,6 +521,13 @@ class NodeSixTeenZone extends Component {
               legendToggle
             />
           )}
+          <ZoneTable
+            zones={zones}
+            nodes={transformDataNode}
+            isShowConstant={
+              !!variable.nugget && !!variable.sill && !!variable.range
+            }
+          />
         </div>
       </div>
     );

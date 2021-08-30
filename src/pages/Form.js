@@ -185,6 +185,7 @@ class Form extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
+
     return (
       <div className="container-graph">
         {loading && (
@@ -194,10 +195,10 @@ class Form extends Component {
         )}
 
         <div style={{ margin: "15px" }}>
-          {/* <Link style={{ marginRight: "15px" }} to="/">1 x 1 zone</Link>
+          <Link style={{ marginRight: "15px" }} to="/">1 x 1 zone</Link>
           <Link style={{ marginRight: "15px" }} to="/separate">2 x 2 zones</Link>
           <Link style={{ marginRight: "15px" }} to="/nine-separate">3 x 3 zones</Link>
-          <Link to="/sixteen-separate">4 x 4 zones</Link> */}
+          <Link to="/sixteen-separate">4 x 4 zones</Link>
           <h1>
             {model.replace(/^\w/, (c) => c.toUpperCase()) || "Exponential"}
           </h1>
