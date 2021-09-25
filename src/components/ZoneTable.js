@@ -1,6 +1,7 @@
 import React from 'react'
+import { max, min } from 'simple-statistics';
 
-const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant }) => {
+const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
   const models = [
@@ -24,6 +25,7 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant })
           return (<td key={zoneBodyData.id + '-' + model}>{predictAttitude[model]}</td>)
         })
       }
+      <td>{sloveList[zoneNumber]}</td>
     </tr>
   )
 }
@@ -39,6 +41,37 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
     }
   }, {})
   const zoneKeys = Object.keys(zones)
+  // {
+  //   1 :[],
+  //   2: [],
+  // }
+  const getSloveZone = zoneKeys.reduce((acc, next) => {
+    const nodesOfZone = zones[next]
+    const latArr = nodesOfZone.map(n => n.latitude)
+    const lonArr = nodesOfZone.map(n => n.longtitude)
+    const attArr = nodesOfZone.map(n => n.attitude)
+
+    const maxLat = max(latArr)
+    const minlat = min(latArr)
+
+    const maxLon = max(lonArr)
+    const minLon = min(lonArr)
+
+    const maxAtt = max(attArr)
+    const minAtt = min(attArr)
+
+    const slove = (maxAtt - minAtt) / Math.sqrt(
+      Math.pow(maxLat - minlat, 2) +
+      Math.pow(maxLon - minLon, 2)
+    )
+
+    return {
+      ...acc,
+      [next]: slove
+    }
+
+  }, {})
+
   return (
     <div style={{ display: 'none' }}>
       <table id="zone-table">
@@ -56,6 +89,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
             <th>Predict Pentaspherical</th>
             <th>Predict Spherical</th>
             <th>Predict Trendline</th>
+            <th>Slove</th>
           </tr>
         </thead>
         <tbody>
@@ -68,6 +102,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
                 zoneBodyData={zoneBodyData}
                 nodeLookupTable={nodeLookupTable}
                 isShowConstant={isShowConstant}
+                sloveList={getSloveZone}
               />)
             })
           }
