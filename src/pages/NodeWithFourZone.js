@@ -177,6 +177,13 @@ class NodeWithSeparate extends Component {
       },
     });
   };
+
+  onSloveChange = (value) => {
+    this.setState({
+      ...this.state,
+      slove: value
+    })
+  }
   render() {
     const {
       nodes,
@@ -227,12 +234,7 @@ class NodeWithSeparate extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
-    const onSloveChange = (value) => {
-      this.setState({
-        ...this.state,
-        slove: value
-      })
-    }
+
     return (
       <div className="container-graph">
         {loading && (
@@ -358,8 +360,7 @@ class NodeWithSeparate extends Component {
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
             <ButtonExportExel
-              onSloveChange={onSloveChange}
-              inputSlove={slove}
+              onSloveChange={this.onSloveChange}
             />
           )}
         </div>

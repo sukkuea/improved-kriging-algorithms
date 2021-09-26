@@ -50,11 +50,11 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
   // }
   const getSloveZone = zoneKeys.reduce((acc, next) => {
     const nodesOfZone = zones[next]
-    const latArr = nodesOfZone.map(n => n.latitude)
-    const lonArr = nodesOfZone.map(n => n.longtitude)
-    const attArr = nodesOfZone.map(n => n.attitude)
+    const latArr = nodesOfZone.map(n => Number(n.latitude))
+    const lonArr = nodesOfZone.map(n => Number(n.longtitude))
+    const attArr = nodesOfZone.map(n => Number(n.attitude))
 
-    const maxLat = max(latArr)
+    const maxLat = latArr.length > 1 ? max(latArr) : latArr[0]
     const minlat = min(latArr)
 
     const maxLon = max(lonArr)
@@ -67,10 +67,10 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
       Math.pow(maxLat - minlat, 2) +
       Math.pow(maxLon - minLon, 2)
     )
-
+    const isOnlyOneInZone = nodesOfZone.length === 1
     return {
       ...acc,
-      [next]: slove * 100
+      [next]: !isOnlyOneInZone ? slove * 100 : 0
     }
 
   }, {})

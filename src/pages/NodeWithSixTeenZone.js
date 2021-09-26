@@ -36,7 +36,8 @@ class NodeSixTeenZone extends Component {
       sill: "",
       range: "",
     },
-    zones: []
+    zones: [],
+    slove: ''
   };
 
   addNode = () => {
@@ -179,6 +180,13 @@ class NodeSixTeenZone extends Component {
       },
     });
   };
+
+  onSloveChange = (value) => {
+    this.setState({
+      ...this.state,
+      slove: value
+    })
+  }
   render() {
     const {
       nodes,
@@ -188,7 +196,8 @@ class NodeSixTeenZone extends Component {
       semiVarioGram,
       model = "exponential",
       variable,
-      zones
+      zones,
+      slove
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -353,7 +362,9 @@ class NodeSixTeenZone extends Component {
           <button onClick={this.addNode}>ADD NODE</button>
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
-            <ButtonExportExel />
+            <ButtonExportExel
+              onSloveChange={this.onSloveChange}
+            />
           )}
         </div>
 
@@ -527,6 +538,7 @@ class NodeSixTeenZone extends Component {
             isShowConstant={
               !!variable.nugget && !!variable.sill && !!variable.range
             }
+            inputSlove={slove}
           />
         </div>
       </div>

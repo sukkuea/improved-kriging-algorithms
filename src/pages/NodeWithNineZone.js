@@ -35,7 +35,8 @@ class NodeWithSeparate extends Component {
       sill: "",
       range: "",
     },
-    zones: []
+    zones: [],
+    slove: ''
   };
 
   addNode = () => {
@@ -174,6 +175,14 @@ class NodeWithSeparate extends Component {
       },
     });
   };
+
+  onSloveChange = (value) => {
+    this.setState({
+      ...this.state,
+      slove: value
+    })
+  }
+
   render() {
     const {
       nodes,
@@ -183,7 +192,8 @@ class NodeWithSeparate extends Component {
       semiVarioGram,
       model = "exponential",
       variable,
-      zones
+      zones,
+      slove
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -223,6 +233,7 @@ class NodeWithSeparate extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
+
     return (
       <div className="container-graph">
         {loading && (
@@ -347,7 +358,9 @@ class NodeWithSeparate extends Component {
           <button onClick={this.addNode}>ADD NODE</button>
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
-            <ButtonExportExel />
+            <ButtonExportExel
+              onSloveChange={this.onSloveChange}
+            />
 
           )}
         </div>
@@ -521,7 +534,9 @@ class NodeWithSeparate extends Component {
             nodes={transformDataNode}
             isShowConstant={
               !!variable.nugget && !!variable.sill && !!variable.range
-            } />
+            }
+            inputSlove={slove}
+          />
         </div>
       </div>
     );
