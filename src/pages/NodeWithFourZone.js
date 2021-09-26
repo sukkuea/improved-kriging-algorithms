@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
 import Plot from "react-plotly.js";
 import memoize from "fast-memoize";
@@ -35,7 +34,8 @@ class NodeWithSeparate extends Component {
       sill: "",
       range: "",
     },
-    zones: []
+    zones: [],
+    slove: ''
   };
 
   addNode = () => {
@@ -186,7 +186,8 @@ class NodeWithSeparate extends Component {
       semiVarioGram,
       model = "exponential",
       variable,
-      zones
+      zones,
+      slove
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -226,7 +227,12 @@ class NodeWithSeparate extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
-
+    const onSloveChange = (value) => {
+      this.setState({
+        ...this.state,
+        slove: value
+      })
+    }
     return (
       <div className="container-graph">
         {loading && (
@@ -351,7 +357,10 @@ class NodeWithSeparate extends Component {
           <button onClick={this.addNode}>ADD NODE</button>
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
-            <ButtonExportExel />
+            <ButtonExportExel
+              onSloveChange={onSloveChange}
+              inputSlove={slove}
+            />
           )}
         </div>
 
@@ -526,6 +535,7 @@ class NodeWithSeparate extends Component {
             isShowConstant={
               !!variable.nugget && !!variable.sill && !!variable.range
             }
+            inputSlove={slove}
           />
         </div>
 

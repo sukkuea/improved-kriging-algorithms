@@ -1,8 +1,9 @@
 import React from 'react'
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-const ButtonExportExel = () => {
+const ButtonExportExel = ({ inputSlove, onSloveChange }) => {
   return (
+
     <div className="wrapper-export-excel">
       <ReactHTMLTableToExcel
         id="table-calculate-node-result-button"
@@ -19,14 +20,18 @@ const ButtonExportExel = () => {
         sheet="ErrorSheetxls"
         buttonText="Download as errors report"
       />
-      <ReactHTMLTableToExcel
+      {inputSlove && (<ReactHTMLTableToExcel
         id="test-table-xls-button"
         className="download-table-xls-button"
         table="zone-table"
         filename="zone_table_sheet"
         sheet="zones_table_sheet"
         buttonText="Download data zones"
-      />
+      />)}
+      <input placeholder="ใส่ค่าความชัน" type="number" onChange={(e) => {
+        const value = e.target.value
+        onSloveChange(value)
+      }}></input>
     </div>
   )
 }

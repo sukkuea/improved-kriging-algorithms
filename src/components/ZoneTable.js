@@ -1,10 +1,20 @@
 import React from 'react'
 import { max, min } from 'simple-statistics';
 
-const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList }) => {
+const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList, inputSlove }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
-  const models = [
+  const isLessThjanInputSlove = sloveList[zoneNumber] < inputSlove
+  const models = isLessThjanInputSlove ? [
+    'exponentialWithKIteration',
+    ...(isShowConstant ? ['exponentialWithKIteration'] : []),
+    'exponentialWithKIteration',
+    'exponentialWithKIteration',
+    'exponentialWithKIteration',
+    'exponentialWithKIteration',
+    'exponentialWithKIteration',
+    'exponentialWithKIteration',
+  ] : [
     'exponential',
     ...(isShowConstant ? ['exponentialWithConstant'] : []),
     'exponentialWithKIteration',
@@ -15,14 +25,14 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
     'trendline',
   ]
   return (
-    <tr key={zoneBodyData.id}>
+    <tr key={zoneBodyData.id + '-' + sloveList[zoneNumber]}>
       <td>{Number(zoneNumber) + 1}</td>
       <td>{zoneBodyData.latitude}</td>
       <td>{zoneBodyData.longtitude}</td>
       <td>{zoneBodyData.attitude}</td>
       {
         models.map((model) => {
-          return (<td key={zoneBodyData.id + '-' + model}>{predictAttitude[model]}</td>)
+          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlove + '-' + sloveList[zoneNumber]}>{predictAttitude[model]}</td>)
         })
       }
       <td>{sloveList[zoneNumber]}</td>
@@ -30,7 +40,7 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
   )
 }
 
-const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
+const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
   const nodeLookupTable = nodes.reduce((acc, next) => {
     const key = next.id
     return {
@@ -67,7 +77,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
 
     return {
       ...acc,
-      [next]: slove
+      [next]: slove * 100
     }
 
   }, {})
@@ -89,7 +99,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
             <th>Predict Pentaspherical</th>
             <th>Predict Spherical</th>
             <th>Predict Trendline</th>
-            <th>Slove</th>
+            <th>Slove %</th>
           </tr>
         </thead>
         <tbody>
@@ -103,6 +113,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, ...props }) => {
                 nodeLookupTable={nodeLookupTable}
                 isShowConstant={isShowConstant}
                 sloveList={getSloveZone}
+                inputSlove={inputSlove}
               />)
             })
           }
