@@ -4,17 +4,8 @@ import { max, min } from 'simple-statistics';
 const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList, inputSlove }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
-  const isLessThjanInputSlove = sloveList[zoneNumber] < inputSlove
-  const models = isLessThjanInputSlove ? [
-    'exponentialWithKIteration',
-    ...(isShowConstant ? ['exponentialWithKIteration'] : []),
-    'exponentialWithKIteration',
-    'exponentialWithKIteration',
-    'exponentialWithKIteration',
-    'exponentialWithKIteration',
-    'exponentialWithKIteration',
-    'exponentialWithKIteration',
-  ] : [
+  const isLessThjanInputSlove = inputSlove && sloveList[zoneNumber] < inputSlove
+  const models = [
     'exponential',
     ...(isShowConstant ? ['exponentialWithConstant'] : []),
     'exponentialWithKIteration',
@@ -32,7 +23,9 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
       <td>{zoneBodyData.attitude}</td>
       {
         models.map((model) => {
-          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlove + '-' + sloveList[zoneNumber]}>{predictAttitude[model]}</td>)
+          const tempModel = isLessThjanInputSlove ? 'exponentialWithKIteration' : model;
+
+          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlove + '-' + sloveList[zoneNumber]}>{predictAttitude[tempModel]}</td>)
         })
       }
       <td>{sloveList[zoneNumber]}</td>
