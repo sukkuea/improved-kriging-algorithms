@@ -4,7 +4,7 @@ import { max, min } from 'simple-statistics';
 const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList, inputSlove }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
-  const isLessThjanInputSlove = inputSlove && sloveList[zoneNumber] < inputSlove
+  const isLessThjanInputSlove = inputSlove && sloveList[zoneNumber] > inputSlove
   const models = [
     'exponential',
     ...(isShowConstant ? ['exponentialWithConstant'] : []),
