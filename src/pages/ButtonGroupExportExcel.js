@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
 
-const ButtonExportExel = ({ onSloveChange }) => {
+const ButtonExportExel = ({ onSlopeChange }) => {
   return (
 
     <div className="wrapper-export-excel">
@@ -30,7 +30,7 @@ const ButtonExportExel = ({ onSloveChange }) => {
       />
       <input placeholder="ใส่ค่าความชัน %" type="number" onChange={(e) => {
         const value = e.target.value
-        onSloveChange(value)
+        onSlopeChange(value)
       }}></input>
     </div>
   )

@@ -1,10 +1,10 @@
 import React from 'react'
-import { max, min } from 'simple-statistics';
+import { max, min, mean } from 'simple-statistics';
 
-const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, sloveList, inputSlove }) => {
+const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, slopeList, inputSlope }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
-  const isLessThjanInputSlove = inputSlove && sloveList[zoneNumber] > inputSlove
+  const isLessThjanInputSlope = inputSlope && slopeList[zoneNumber] > inputSlope
   const models = [
     'exponential',
     ...(isShowConstant ? ['exponentialWithConstant'] : []),
@@ -16,24 +16,24 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
     'trendline',
   ]
   return (
-    <tr key={zoneBodyData.id + '-' + sloveList[zoneNumber]}>
+    <tr key={zoneBodyData.id + '-' + slopeList[zoneNumber]}>
       <td>{Number(zoneNumber) + 1}</td>
       <td>{zoneBodyData.latitude}</td>
       <td>{zoneBodyData.longtitude}</td>
       <td>{zoneBodyData.attitude}</td>
       {
         models.map((model) => {
-          const tempModel = isLessThjanInputSlove ? 'exponentialWithKIteration' : model;
+          const tempModel = isLessThjanInputSlope ? 'exponentialWithKIteration' : model;
 
-          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlove + '-' + sloveList[zoneNumber]}>{predictAttitude[tempModel]}</td>)
+          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlope + '-' + slopeList[zoneNumber]}>{predictAttitude[tempModel]}</td>)
         })
       }
-      <td>{sloveList[zoneNumber]}</td>
+      <td>{slopeList[zoneNumber]}</td>
     </tr>
   )
 }
 
-const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
+const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
   const nodeLookupTable = nodes.reduce((acc, next) => {
     const key = next.id
     return {
@@ -48,7 +48,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
   //   1 :[],
   //   2: [],
   // }
-  const getSloveZone = zoneKeys.reduce((acc, next) => {
+  const getSlopeZone = zoneKeys.reduce((acc, next) => {
     const nodesOfZone = zones[next]
     const latArr = nodesOfZone.map(n => Number(n.latitude))
     const lonArr = nodesOfZone.map(n => Number(n.longtitude))
@@ -60,17 +60,17 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
     const maxLon = max(lonArr)
     const minLon = min(lonArr)
 
-    const maxAtt = max(attArr)
+    const maxAtt = mean(attArr)
     const minAtt = min(attArr)
 
-    const slove = (maxAtt - minAtt) / Math.sqrt(
+    const slope = (maxAtt - minAtt) / Math.sqrt(
       Math.pow(maxLat - minlat, 2) +
       Math.pow(maxLon - minLon, 2)
     )
     const isOnlyOneInZone = nodesOfZone.length === 1
     return {
       ...acc,
-      [next]: !isOnlyOneInZone ? slove * 100 : 0
+      [next]: !isOnlyOneInZone ? slope * 100 : 0
     }
 
   }, {})
@@ -92,7 +92,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
             <th>Predict Pentaspherical</th>
             <th>Predict Spherical</th>
             <th>Predict Trendline</th>
-            <th>Slove %</th>
+            <th>Slope %</th>
           </tr>
         </thead>
         <tbody>
@@ -105,8 +105,8 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlove }) => {
                 zoneBodyData={zoneBodyData}
                 nodeLookupTable={nodeLookupTable}
                 isShowConstant={isShowConstant}
-                sloveList={getSloveZone}
-                inputSlove={inputSlove}
+                slopeList={getSlopeZone}
+                inputSlope={inputSlope}
               />)
             })
           }

@@ -37,7 +37,7 @@ class NodeSixTeenZone extends Component {
       range: "",
     },
     zones: [],
-    slove: ''
+    slope: ''
   };
 
   addNode = () => {
@@ -181,10 +181,10 @@ class NodeSixTeenZone extends Component {
     });
   };
 
-  onSloveChange = (value) => {
+  onSlopeChange = (value) => {
     this.setState({
       ...this.state,
-      slove: value
+      slope: value
     })
   }
   render() {
@@ -197,7 +197,7 @@ class NodeSixTeenZone extends Component {
       model = "exponential",
       variable,
       zones,
-      slove
+      slope
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -363,7 +363,7 @@ class NodeSixTeenZone extends Component {
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
             <ButtonExportExel
-              onSloveChange={this.onSloveChange}
+              onSlopeChange={this.onSlopeChange}
             />
           )}
         </div>
@@ -538,7 +538,7 @@ class NodeSixTeenZone extends Component {
             isShowConstant={
               !!variable.nugget && !!variable.sill && !!variable.range
             }
-            inputSlove={slove}
+            inputSlope={slope}
           />
         </div>
       </div>

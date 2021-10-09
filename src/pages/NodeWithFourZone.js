@@ -35,7 +35,7 @@ class NodeWithSeparate extends Component {
       range: "",
     },
     zones: [],
-    slove: ''
+    slope: ''
   };
 
   addNode = () => {
@@ -178,10 +178,10 @@ class NodeWithSeparate extends Component {
     });
   };
 
-  onSloveChange = (value) => {
+  onSlopeChange = (value) => {
     this.setState({
       ...this.state,
-      slove: value
+      slope: value
     })
   }
   render() {
@@ -194,7 +194,7 @@ class NodeWithSeparate extends Component {
       model = "exponential",
       variable,
       zones,
-      slove
+      slope
     } = this.state;
     const transformDataNode = nodes.sort((a, b) => {
       if (a.id > b.id) {
@@ -360,7 +360,7 @@ class NodeWithSeparate extends Component {
           <button onClick={this.onSubmit}>Submit</button>
           {error && (
             <ButtonExportExel
-              onSloveChange={this.onSloveChange}
+              onSlopeChange={this.onSlopeChange}
             />
           )}
         </div>
@@ -536,7 +536,7 @@ class NodeWithSeparate extends Component {
             isShowConstant={
               !!variable.nugget && !!variable.sill && !!variable.range
             }
-            inputSlove={slove}
+            inputSlope={slope}
           />
         </div>
 
