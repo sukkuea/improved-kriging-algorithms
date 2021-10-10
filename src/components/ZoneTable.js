@@ -1,20 +1,23 @@
 import React from 'react'
 import { max, min, mean } from 'simple-statistics';
+import { getZoneRMSE } from '../Utils/calculateRMSEzone';
+
+const models = (isShowConstant) => ([
+  'exponential',
+  ...(isShowConstant ? ['exponentialWithConstant'] : []),
+  'exponentialWithKIteration',
+  'gaussian',
+  'linear',
+  'pentaspherical',
+  'spherical',
+  'trendline',
+])
 
 const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, slopeList, inputSlope }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
   const isLessThjanInputSlope = inputSlope && slopeList[zoneNumber] > inputSlope
-  const models = [
-    'exponential',
-    ...(isShowConstant ? ['exponentialWithConstant'] : []),
-    'exponentialWithKIteration',
-    'gaussian',
-    'linear',
-    'pentaspherical',
-    'spherical',
-    'trendline',
-  ]
+
   return (
     <tr key={zoneBodyData.id + '-' + slopeList[zoneNumber]}>
       <td>{Number(zoneNumber) + 1}</td>
@@ -22,7 +25,7 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
       <td>{zoneBodyData.longtitude}</td>
       <td>{zoneBodyData.attitude}</td>
       {
-        models.map((model) => {
+        models(isShowConstant).map((model) => {
           const tempModel = isLessThjanInputSlope ? 'exponentialWithKIteration' : model;
 
           return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlope + '-' + slopeList[zoneNumber]}>{predictAttitude[tempModel]}</td>)
@@ -44,6 +47,15 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
     }
   }, {})
   const zoneKeys = Object.keys(zones)
+  const errorAndKeyEachZone = []
+  for (let i = 0; i < zoneKeys.length; i++) {
+    const result = getZoneRMSE(zones[zoneKeys[i]], nodeLookupTable)
+    errorAndKeyEachZone.push({
+      zone: +zoneKeys[i] + 1,
+      ...result
+    })
+  }
+  console.log(errorAndKeyEachZone)
   // {
   //   1 :[],
   //   2: [],
@@ -93,6 +105,15 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
             <th>Predict Spherical</th>
             <th>Predict Trendline</th>
             <th>Slope %</th>
+            <th>Error Exponential</th>
+            {isShowConstant && <th>Error Exponential With Constant</th>}
+            <th>Error Exponential With K Iteration</th>
+            <th>Error Gaussian</th>
+            <th>Error Linear</th>
+            <th>Error Pentaspherical</th>
+            <th>Error Spherical</th>
+            <th>Error Trendline</th>
+            <th>Selected Model</th>
           </tr>
         </thead>
         <tbody>

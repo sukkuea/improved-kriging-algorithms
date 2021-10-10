@@ -40,6 +40,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "excel-as-json": "^2.0.2"
+    "excel-as-json": "^2.0.2",
+    "node-pre-gyp": "0.12.0"
   }
 }
