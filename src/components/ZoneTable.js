@@ -13,11 +13,12 @@ const models = (isShowConstant) => ([
   'trendline',
 ])
 
-const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, slopeList, inputSlope }) => {
+const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, slopeList, inputSlope,
+  errorAndSelectedModel }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
   const isLessThjanInputSlope = inputSlope && slopeList[zoneNumber] > inputSlope
-
+  const { key, errors } = errorAndSelectedModel
   return (
     <tr key={zoneBodyData.id + '-' + slopeList[zoneNumber]}>
       <td>{Number(zoneNumber) + 1}</td>
@@ -26,12 +27,19 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
       <td>{zoneBodyData.attitude}</td>
       {
         models(isShowConstant).map((model) => {
-          const tempModel = isLessThjanInputSlope ? 'exponentialWithKIteration' : model;
+          const tempModel = isLessThjanInputSlope ? key : model;
 
           return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlope + '-' + slopeList[zoneNumber]}>{predictAttitude[tempModel]}</td>)
         })
       }
       <td>{slopeList[zoneNumber]}</td>
+      <td>{isLessThjanInputSlope ? key : 'use default'}</td>
+      {
+        models(isShowConstant).map((model) => {
+
+          return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlope + '-' + errors[model]}>{errors[model]}</td>)
+        })
+      }
     </tr>
   )
 }
@@ -105,6 +113,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
             <th>Predict Spherical</th>
             <th>Predict Trendline</th>
             <th>Slope %</th>
+            <th>Selected Model</th>
             <th>Error Exponential</th>
             {isShowConstant && <th>Error Exponential With Constant</th>}
             <th>Error Exponential With K Iteration</th>
@@ -113,13 +122,13 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
             <th>Error Pentaspherical</th>
             <th>Error Spherical</th>
             <th>Error Trendline</th>
-            <th>Selected Model</th>
           </tr>
         </thead>
         <tbody>
           {
-            zoneKeys.map((zoneNumber) => {
+            zoneKeys.map((zoneNumber, index) => {
               const zoneBody = zones[zoneNumber]
+              const errorAndSelectedModel = errorAndKeyEachZone[index]
               return zoneBody.map((zoneBodyData) => <ZoneBody
                 key={zoneNumber + '-' + zoneBodyData.id}
                 zoneNumber={zoneNumber}
@@ -128,6 +137,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
                 isShowConstant={isShowConstant}
                 slopeList={getSlopeZone}
                 inputSlope={inputSlope}
+                errorAndSelectedModel={errorAndSelectedModel}
               />)
             })
           }
