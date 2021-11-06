@@ -102,7 +102,6 @@ class Form extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
-      start: dayjs()
     });
     console.time("start");
     const {
