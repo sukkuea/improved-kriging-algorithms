@@ -431,7 +431,7 @@ class NodeSixTeenZone extends Component {
                     zerolinecolor: 'white',
                     gridcolor: 'white',
                     nticks: 20,
-                    range: [0, 100],
+
 
                   },
                   yaxis: {
@@ -498,7 +498,7 @@ class NodeSixTeenZone extends Component {
                     zerolinecolor: 'white',
                     gridcolor: 'white',
                     nticks: 20,
-                    range: [0, 100],
+
 
                   },
                   yaxis: {

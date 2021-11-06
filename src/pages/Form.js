@@ -102,6 +102,7 @@ class Form extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
+      start: dayjs()
     });
     console.time("start");
     const {
@@ -394,7 +395,6 @@ class Form extends Component {
                     zerolinecolor: 'white',
                     gridcolor: 'white',
                     nticks: 20,
-                    range: [0, 100],
 
                   },
                   yaxis: {
@@ -461,7 +461,7 @@ class Form extends Component {
                     zerolinecolor: 'white',
                     gridcolor: 'white',
                     nticks: 20,
-                    range: [0, 100],
+
 
                   },
                   yaxis: {
