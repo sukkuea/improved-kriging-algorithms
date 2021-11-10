@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React from 'react'
 import { max, min, mean } from 'simple-statistics';
 import { getZoneRMSE } from '../Utils/calculateRMSEzone';
@@ -14,7 +15,7 @@ const models = (isShowConstant) => ([
 ])
 
 const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, slopeList, inputSlope,
-  errorAndSelectedModel }) => {
+  errorAndSelectedModel, time }) => {
   const nodeId = zoneBodyData.id
   const predictAttitude = nodeLookupTable[nodeId].predictAttitude
   const isLessThjanInputSlope = inputSlope && slopeList[zoneNumber] > inputSlope
@@ -40,11 +41,12 @@ const ZoneBody = ({ zoneNumber, zoneBodyData, nodeLookupTable, isShowConstant, s
           return (<td key={zoneBodyData.id + '-' + model + '-' + inputSlope + '-' + errors[model]}>{errors[model]}</td>)
         })
       }
+      <td>{`${time.hours} h ${time.minutes} m ${time.seconds}s`}</td>
     </tr>
   )
 }
 
-const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
+const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope, startTime = dayjs(), endTime = dayjs() }) => {
   const nodeLookupTable = nodes.reduce((acc, next) => {
     const key = next.id
     return {
@@ -62,6 +64,14 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
       zone: +zoneKeys[i] + 1,
       ...result
     })
+  }
+  const hours = endTime.diff(startTime, 'h');
+  const minutes = endTime.diff(startTime, 'm');
+  const seconds = endTime.diff(startTime, 's');
+  const time = {
+    seconds,
+    minutes,
+    hours
   }
   console.log(errorAndKeyEachZone)
   // {
@@ -122,6 +132,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
             <th>Error Pentaspherical</th>
             <th>Error Spherical</th>
             <th>Error Trendline</th>
+            <th>Time HH:MM:SS</th>
           </tr>
         </thead>
         <tbody>
@@ -138,6 +149,7 @@ const ZoneTable = ({ zones, nodes, isShowConstant, inputSlope }) => {
                 slopeList={getSlopeZone}
                 inputSlope={inputSlope}
                 errorAndSelectedModel={errorAndSelectedModel}
+                time={time}
               />)
             })
           }

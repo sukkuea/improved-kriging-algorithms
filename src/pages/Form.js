@@ -16,6 +16,7 @@ import getTrendlines from "../Utils/getTrendlines";
 import ErrorTable from "../components/ErrorTable";
 import NodeResultTable from "../components/NodeResultTable";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 
 const memoizeCalCulateAttitude = memoize(calCulateAttitude);
 class Form extends Component {
@@ -102,8 +103,8 @@ class Form extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
+      start: dayjs()
     });
-    console.time("start");
     const {
       bestSumList,
       bestSum,
@@ -119,8 +120,8 @@ class Form extends Component {
       nodes: newNodesWithLastAttitude,
       semiVarioGram,
       loading: false,
+      end: dayjs()
     });
-    console.timeEnd("start");
   };
   handleChangeModel = (e) => {
     const value = e.target.value;
@@ -185,6 +186,15 @@ class Form extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
+    let hours = false
+    let minutes = false
+    let seconds = false
+
+    if (this.state.end && this.state.start) {
+      hours = this.state.end.diff(this.state.start, 'h');
+      minutes = this.state.end.diff(this.state.start, 'm');
+      seconds = this.state.end.diff(this.state.start, 's');
+    }
 
     return (
       <div className="container-graph">
@@ -316,6 +326,7 @@ class Form extends Component {
                 filename="prediction_calculate_result"
                 sheet="prediction_calculate_result"
                 buttonText="Download as prediction"
+
               />
               <ReactHTMLTableToExcel
                 id="test-table-xls-button"
@@ -493,6 +504,12 @@ class Form extends Component {
               legendToggle
             />
           )}
+          {
+            hours !== false &&
+            minutes !== false &&
+            seconds !== false &&
+            <h1>Pending time {`${hours} h ${minutes} m ${seconds}s`}</h1>
+          }
         </div>
       </div>
     );

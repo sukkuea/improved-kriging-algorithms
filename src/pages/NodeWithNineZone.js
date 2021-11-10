@@ -21,6 +21,7 @@ import { Link } from "react-router-dom";
 import { separateNineZone } from "../Utils/separateNode";
 import ZoneTable from "../components/ZoneTable";
 import ButtonExportExel from "./ButtonGroupExportExcel";
+import dayjs from "dayjs";
 
 const memoizeCalCulateAttitude = memoize(calCulateAttitude);
 class NodeWithSeparate extends Component {
@@ -109,6 +110,7 @@ class NodeWithSeparate extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
+      start: dayjs()
     });
     const zone = separateNineZone(nodes);
     this.setState({
@@ -158,6 +160,7 @@ class NodeWithSeparate extends Component {
       semiVarioGram: semiVarioGramTemp,
       nodes: newNode.sort((a, b) => a.id < b.id),
       loading: false,
+      end: dayjs()
     });
   };
   handleChangeModel = (e) => {
@@ -536,6 +539,8 @@ class NodeWithSeparate extends Component {
               !!variable.nugget && !!variable.sill && !!variable.range
             }
             inputSlope={slope}
+            startTime={this.state.start}
+            endTime={this.state.end}
           />
         </div>
       </div>

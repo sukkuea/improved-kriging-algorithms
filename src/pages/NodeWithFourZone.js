@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { findCenter, separateZone } from "../Utils/separateNode";
 import ZoneTable from "../components/ZoneTable";
 import ButtonExportExel from "./ButtonGroupExportExcel";
+import dayjs from "dayjs";
 
 const memoizeCalCulateAttitude = memoize(calCulateAttitude);
 class NodeWithSeparate extends Component {
@@ -108,6 +109,7 @@ class NodeWithSeparate extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
+      start: dayjs()
     });
     const center = findCenter(nodes);
     const zone = separateZone(nodes, center);
@@ -159,6 +161,7 @@ class NodeWithSeparate extends Component {
       semiVarioGram: semiVarioGramTemp,
       nodes: newNode.sort((a, b) => a.id < b.id),
       loading: false,
+      end: dayjs()
     });
     console.timeEnd("start");
   };
@@ -537,6 +540,8 @@ class NodeWithSeparate extends Component {
               !!variable.nugget && !!variable.sill && !!variable.range
             }
             inputSlope={slope}
+            startTime={this.state.start}
+            endTime={this.state.end}
           />
         </div>
 

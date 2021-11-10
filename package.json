@@ -6,8 +6,9 @@
     "@emotion/core": "^10.0.10",
     "axios": "^0.18.0",
     "convert-excel-to-json": "^1.6.1",
+    "dayjs": "^1.10.7",
     "fast-memoize": "^2.5.1",
-    "libxmljs": "^0.19.7",
+    "libxmljs": "^0.18.0",
     "mathjs": "^5.9.0",
     "plotly.js": "^1.47.4",
     "react": "^16.8.6",
@@ -22,6 +23,8 @@
     "react-spinner": "^0.2.7",
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
+    "rmse": "0.0.4",
+    "simple-statistics": "^7.7.0",
     "xlsx": "^0.14.3"
   },
   "scripts": {

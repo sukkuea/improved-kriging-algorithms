@@ -22,6 +22,7 @@ import { findCenter, separateZone } from "../Utils/separateNode";
 import { separateSixTeenZone } from "../Utils/separateSixTeenZone";
 import ZoneTable from "../components/ZoneTable";
 import ButtonExportExel from "./ButtonGroupExportExcel";
+import dayjs from "dayjs";
 
 const memoizeCalCulateAttitude = memoize(calCulateAttitude);
 class NodeSixTeenZone extends Component {
@@ -110,6 +111,7 @@ class NodeSixTeenZone extends Component {
     const { nodes, loading, variable } = this.state;
     this.setState({
       loading: !loading,
+      start: dayjs()
     });
     const center = findCenter(nodes);
 
@@ -162,6 +164,7 @@ class NodeSixTeenZone extends Component {
       semiVarioGram: semiVarioGramTemp,
       nodes: newNode.sort((a, b) => a.id < b.id),
       loading: false,
+      end: dayjs()
     });
     console.timeEnd("start");
   };
@@ -539,6 +542,8 @@ class NodeSixTeenZone extends Component {
               !!variable.nugget && !!variable.sill && !!variable.range
             }
             inputSlope={slope}
+            startTime={this.state.start}
+            endTime={this.state.end}
           />
         </div>
       </div>
