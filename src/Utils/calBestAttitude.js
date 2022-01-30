@@ -176,6 +176,61 @@ const calculateBestNuggetSillRange = (range, maxRange, variable) => {
     exponentialWithConstant: 0,
   };
 
+  if (!!variable.nugget && !!variable.sill && !!variable.range) {
+    const vairiantNodeObjectConstant = tranformSemivariance(range)(
+      Number(variable.nugget),
+      Number(variable.sill),
+      Number(variable.range)
+    );
+
+    const modelExponentialWithContant = calBestAttitudeLastNode(
+      vairiantNodeObjectConstant,
+      "exponential"
+    );
+
+    const modelGussian = calBestAttitudeLastNode(
+      vairiantNodeObjectConstant,
+      "gaussian"
+    );
+
+    const modelSpherical = calBestAttitudeLastNode(
+      vairiantNodeObjectConstant,
+      "spherical"
+    );
+
+    minError["exponentialWithConstant"] =
+      modelExponentialWithContant.errorPedictionModel;
+    bestNugget["exponentialWithConstant"] = variable.nugget;
+    bestSill["exponentialWithConstant"] = variable.sill;
+    bestRange["exponentialWithConstant"] = variable.range;
+    bestSum["exponentialWithConstant"] = modelExponentialWithContant.sum;
+    semiVarioGram[
+      "exponentialWithConstant"
+    ] = vairiantNodeObjectConstant.map(({ exponential }) => exponential);
+
+    minError["gaussian"] = modelGussian.errorPedictionModel;
+    bestNugget["gaussian"] = variable.nugget;
+    bestSill["gaussian"] = variable.sill;
+    bestRange["gaussian"] = variable.range;
+    bestSum["gaussian"] = modelGussian.sum;
+    semiVarioGram["gaussian"] = vairiantNodeObjectConstant.map(
+      ({ gaussian }) => gaussian
+    );
+    /* spherical */
+
+    minError["spherical"] = modelSpherical.errorPedictionModel;
+    bestNugget["spherical"] = variable.nugget;
+    bestSill["spherical"] = variable.sill;
+    bestRange["spherical"] = variable.range;
+    bestSum["spherical"] = modelSpherical.sum;
+    semiVarioGram["spherical"] = vairiantNodeObjectConstant.map(
+      ({ spherical }) => spherical
+    );
+    /* spherical */
+
+  }
+
+
   for (let i = 0; i < nuggetArray.length; i++) {
     for (let j = 0; j < sillArray.length; j++) {
       const vairiantNodeObject = tranformSemivariance(range)(
@@ -183,30 +238,6 @@ const calculateBestNuggetSillRange = (range, maxRange, variable) => {
         +sillArray[j],
         maxRange
       );
-
-      if (!!variable.nugget && !!variable.sill && !!variable.range) {
-        const vairiantNodeObjectConstant = tranformSemivariance(range)(
-          Number(variable.nugget),
-          Number(variable.sill),
-          Number(variable.range)
-        );
-
-        const modelExponentialWithContant = calBestAttitudeLastNode(
-          vairiantNodeObjectConstant,
-          "exponential"
-        );
-
-        minError["exponentialWithConstant"] =
-          modelExponentialWithContant.errorPedictionModel;
-        bestNugget["exponentialWithConstant"] = variable.nugget;
-        bestSill["exponentialWithConstant"] = variable.sill;
-        bestRange["exponentialWithConstant"] = variable.range;
-        bestSum["exponentialWithConstant"] = modelExponentialWithContant.sum;
-        semiVarioGram[
-          "exponentialWithConstant"
-        ] = vairiantNodeObjectConstant.map(({ exponential }) => exponential);
-      }
-
       const modelExponential = calBestAttitudeLastNode(
         vairiantNodeObject,
         "exponential"
@@ -214,18 +245,11 @@ const calculateBestNuggetSillRange = (range, maxRange, variable) => {
 
       const modelLinear = calBestAttitudeLastNode(vairiantNodeObject, "linear");
 
-      const modelSpherical = calBestAttitudeLastNode(
-        vairiantNodeObject,
-        "spherical"
-      );
       const modelPentaSpherical = calBestAttitudeLastNode(
         vairiantNodeObject,
         "pentaspherical"
       );
-      const modelGussian = calBestAttitudeLastNode(
-        vairiantNodeObject,
-        "gaussian"
-      );
+
       const modelTrendline = calBestAttitudeLastNode(
         vairiantNodeObject,
         "exponentialPolynomialTrendlines"
@@ -293,26 +317,6 @@ const calculateBestNuggetSillRange = (range, maxRange, variable) => {
         );
       }
 
-      if (minError["gaussian"] === 0) {
-        minError["gaussian"] = modelGussian.errorPedictionModel;
-        bestNugget["gaussian"] = nuggetArray[i];
-        bestSill["gaussian"] = sillArray[j];
-        bestRange["gaussian"] = maxRange;
-        bestSum["gaussian"] = modelGussian.sum;
-        semiVarioGram["gaussian"] = vairiantNodeObject.map(
-          ({ gaussian }) => gaussian
-        );
-      }
-      if (modelGussian.errorPedictionModel < minError["gaussian"]) {
-        minError["gaussian"] = modelGussian.errorPedictionModel;
-        bestNugget["gaussian"] = nuggetArray[i];
-        bestSill["gaussian"] = sillArray[j];
-        bestRange["gaussian"] = maxRange;
-        bestSum["gaussian"] = modelGussian.sum;
-        semiVarioGram["gaussian"] = vairiantNodeObject.map(
-          ({ gaussian }) => gaussian
-        );
-      }
       //
 
       if (minError["pentaspherical"] === 0) {
@@ -360,29 +364,6 @@ const calculateBestNuggetSillRange = (range, maxRange, variable) => {
         );
       }
       /*linear*/
-
-      /* spherical */
-      if (minError["spherical"] === 0) {
-        minError["spherical"] = modelSpherical.errorPedictionModel;
-        bestNugget["spherical"] = nuggetArray[i];
-        bestSill["spherical"] = sillArray[j];
-        bestRange["spherical"] = maxRange;
-        bestSum["spherical"] = modelSpherical.sum;
-        semiVarioGram["spherical"] = vairiantNodeObject.map(
-          ({ spherical }) => spherical
-        );
-      }
-      if (modelSpherical.errorPedictionModel < minError["spherical"]) {
-        minError["spherical"] = modelSpherical.errorPedictionModel;
-        bestNugget["spherical"] = nuggetArray[i];
-        bestSill["spherical"] = sillArray[j];
-        bestRange["spherical"] = maxRange;
-        bestSum["spherical"] = modelSpherical.sum;
-        semiVarioGram["spherical"] = vairiantNodeObject.map(
-          ({ spherical }) => spherical
-        );
-      }
-      /* spherical */
 
       /*exponential*/
 

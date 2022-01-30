@@ -185,6 +185,7 @@ class Form extends Component {
       vAxis: { title: 'Semivariance' },
       hAxis: { title: 'Distance' },
     };
+    const isDisabledSubmit = !variable.nugget && !variable.sill && !variable.range
     return (
       <div className="container-graph">
         {loading && (
@@ -305,7 +306,7 @@ class Form extends Component {
 
           <input onChange={this.onChangeFile} type="file"></input>
           <button onClick={this.addNode}>ADD NODE</button>
-          <button onClick={this.onSubmit}>Submit</button>
+          <button onClick={this.onSubmit} disabled={isDisabledSubmit}>Submit</button>
           {error && (
             <div className="wrapper-export-excel">
               <ReactHTMLTableToExcel
