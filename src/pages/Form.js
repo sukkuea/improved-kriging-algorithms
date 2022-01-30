@@ -122,11 +122,13 @@ class Form extends Component {
     });
     console.timeEnd("start");
   };
-  handleChangeModel = (e) => {
+  handleChangeModel = (label) => (e) => {
     const value = e.target.value;
     this.setState({
       model: value,
+      labelModel: label
     });
+
   };
   handleChangeValue = (e) => {
     const { name, value } = e.target;
@@ -145,7 +147,7 @@ class Form extends Component {
       allRangeOfNodes,
       semiVarioGram,
       bestSumList = false,
-      model = "exponential",
+      model = "exponentialWithConstant",
       variable,
     } = this.state;
     const transformDataNode = lastPredictNode // TODO: lastPredictNode
@@ -164,7 +166,7 @@ class Form extends Component {
       : false;
 
     const trendlineData = lastPredictNode
-      ? getTrendlines(allRangeOfNodes, semiVarioGram["exponential"]).filter(([a, b]) => b !== 1)
+      ? getTrendlines(allRangeOfNodes, semiVarioGram["exponentialWithConstant"]).filter(([a, b]) => b !== 1)
       : [];
 
 
@@ -186,6 +188,32 @@ class Form extends Component {
       hAxis: { title: 'Distance' },
     };
     const isDisabledSubmit = !variable.nugget && !variable.sill && !variable.range
+    const buttonList = [
+      {
+        label: 'Gussian Model',
+        model: 'gaussian'
+      },
+      {
+        model: "spherical",
+        label: 'Spherical Model'
+      },
+      {
+        label: 'Exponential',
+        model: 'exponentialWithConstant'
+      },
+      {
+        label: 'Exponential with Parameter Optimizer',
+        model: 'exponential'
+      },
+      {
+        label: 'Exponential with K-Iterations Optimizer',
+        model: 'exponentialWithKIteration'
+      },
+      {
+        label: 'Exponential with Polynomial-Trend Line',
+        model: 'trendline'
+      },
+    ]
     return (
       <div className="container-graph">
         {loading && (
@@ -200,42 +228,21 @@ class Form extends Component {
           <Link style={{ marginRight: "15px" }} to="/nine-separate">3 x 3 zones</Link>
           <Link to="/sixteen-separate">4 x 4 zones</Link> */}
           <h1>
-            {model.replace(/^\w/, (c) => c.toUpperCase()) || "Exponential"}
+            {this.state.labelModel || "Exponential"}
           </h1>
           <div>
             <h1>Model Selection</h1>
-            <button onClick={this.handleChangeModel} value="exponential">
-              Exponential Model
-            </button>
-            <button onClick={this.handleChangeModel} value="linear">
-              Linear Model
-            </button>
-            <button onClick={this.handleChangeModel} value="spherical">
-              Spherical Model
-            </button>
-            <button onClick={this.handleChangeModel} value="pentaspherical">
-              Pentaspherical Model
-            </button>
-            <button onClick={this.handleChangeModel} value="gaussian">
-              Gussian Model
-            </button>
-            <button onClick={this.handleChangeModel} value="trendline">
-              Trendline Model
-            </button>
-            <button
-              onClick={this.handleChangeModel}
-              value="exponentialWithKIteration"
-            >
-              Exponential with K iteration Model
-            </button>
-            {!!variable.nugget && !!variable.sill && !!variable.range && (
-              <button
-                onClick={this.handleChangeModel}
-                value="exponentialWithConstant"
-              >
-                Exponential with Constant
-              </button>
-            )}
+
+            {
+              buttonList.map(({ label, model }) => {
+                return (
+                  <button onClick={this.handleChangeModel(label)} value={model}>
+                    {label}
+                  </button>
+                )
+              })
+            }
+
           </div>
           <h1>Node list</h1>
           <input
